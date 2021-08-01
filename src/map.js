@@ -9,7 +9,7 @@ class Map extends React.Component{
         </div>
       );
     }else{
-      return null;
+      return '';
     }
   }
 }
