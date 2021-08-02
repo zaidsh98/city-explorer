@@ -13,7 +13,7 @@ class Main extends React.Component {
       locationName : '',
       display : false,
       errorShown : false,
-      // errorWarning : '',
+      weather: [],
     };
   }
 
@@ -24,10 +24,12 @@ class Main extends React.Component {
           const api = `https://us1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATION_IQ_TOKEN}&q=${this.state.locationName}&format=json`;
           const responce = await axios.get(api);
 
+          const weatherResponse = await axios.get(`http:localhost:4444/weather`);
+
           this.setState({
             data : responce.data[0],
             display : true,
-            // errorShown : false,
+            weather: weatherResponse.data,
           });
         }
         catch {
@@ -69,6 +71,15 @@ class Main extends React.Component {
               )}
 
               <h3>{this.state.data.display_name}</h3>
+              <ul>
+                {
+                  this.state.weather.map((value) =>{
+                    return (<li>
+                   (value)
+                    </li>);
+                  })
+                }
+              </ul>
 
             </div>
 
