@@ -11,20 +11,34 @@ class Main extends React.Component {
     this.state = {
       data : '',
       locationName : '',
-      display : false
+      display : false,
+      errorShown : false,
+      // errorWarning : '',
     };
   }
 
       getLocation = async (event) => {
         event.preventDefault();
-        const api = `https://us1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATION_IQ_TOKEN}&q=${this.state.locationName}&format=json`;
-        const responce = await axios.get(api);
 
-        this.setState({
-          data : responce.data[0],
-          display : true
-        });
-      }
+        try {
+          const api = `https://us1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_LOCATION_IQ_TOKEN}&q=${this.state.locationName}&format=json`;
+          const responce = await axios.get(api);
+
+          this.setState({
+            data : responce.data[0],
+            display : true,
+            // errorShown : false,
+          });
+        }
+        catch {
+          this.setState({
+            errorShown : true,
+
+          });
+        }
+
+      };
+
 
       updateLocation = (event) => {
         this.setState({locationName : event.target.value});
@@ -47,7 +61,15 @@ class Main extends React.Component {
             </div>
 
             <div className={'location'}>
+
+              {this.state.errorShown && (
+                <h1>
+                  Error 404 <h2>Unable to geocode</h2>
+                </h1>
+              )}
+
               <h3>{this.state.data.display_name}</h3>
+
             </div>
 
             <Map
